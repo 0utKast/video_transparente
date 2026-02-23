@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoResizer Pro | Modern Video Tools</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&family=Inter:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --card-glass: rgba(30, 41, 59, 0.7);
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --text-primary: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-glass: rgba(255, 255, 255, 0.1);
+        }
+
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        h1,
+        h2,
+        h3,
+        .h-header {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 900px;
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+
+        .glass-card {
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .upload-zone {
+            padding: 3rem;
+            text-align: center;
+            border: 2px dashed var(--border-glass);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .form-control {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border-glass);
+            color: white;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+        }
+
+        .form-control:focus {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: var(--accent);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-outline-success {
+            border-color: #10b981;
+            color: #10b981;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .btn-outline-success:hover {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+        }
+
+        .form-check-input {
+            background-color: rgba(15, 23, 42, 0.5);
+            border-color: var(--border-glass);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .table {
+            color: var(--text-primary);
+            --bs-table-bg: transparent;
+            --bs-table-border-color: var(--border-glass);
+        }
+
+        .table thead th {
+            border-bottom: 2px solid var(--border-glass);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .badge {
+            padding: 0.5em 1em;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+
+        .bg-primary {
+            background-color: var(--accent) !important;
+        }
+
+        .bg-success {
+            background-color: #10b981 !important;
+        }
+
+        .bg-secondary {
+            background-color: #475569 !important;
+        }
+
+        .bg-danger {
+            background-color: #ef4444 !important;
+        }
+
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        #error {
+            border-radius: 16px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-glass);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container text-center">
+        <header class="mb-5 py-4">
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <i data-lucide="video" class="me-3 text-indigo-400"
+                    style="width: 48px; height: 48px; color: var(--accent);"></i>
+                <h1 class="display-4 m-0">VideoResizer <span style="color: var(--accent);">Pro</span></h1>
+            </div>
+            <p class="lead text-muted">Aumenta a 4K, invierte vídeos, o recorta fondos con Inteligencia Artificial.</p>
+        </header>
+
+        <div class="glass-card p-5 text-start mb-5">
+            <form id="uploadForm">
+                <div class="mb-5">
+                    <label for="videoFile" class="form-label h-header mb-3">
+                        <i data-lucide="upload-cloud" class="me-2 text-muted" style="width: 20px; height: 20px;"></i>
+                        Selecciona tus archivos
+                    </label>
+                    <div class="upload-zone" onclick="document.getElementById('videoFile').click()">
+                        <i data-lucide="plus-circle" class="mb-3 text-muted" style="width: 48px; height: 48px;"></i>
+                        <p class="mb-0 text-muted">Haz clic o arrastra vídeos aquí</p>
+                        <small class="text-uppercase" style="font-size: 0.65rem; letter-spacing: 1px;">MP4, AVI, MOV,
+                            MKV</small>
+                        <input class="d-none" type="file" id="videoFile" name="file" accept=".mp4,.avi,.mov,.mkv"
+                            multiple required>
+                    </div>
+                    <div id="fileInfo" class="mt-2 text-muted small"></div>
+                </div>
+
+                <div class="mb-5">
+                    <label class="form-label h-header mb-3">
+                        <i data-lucide="settings" class="me-2 text-muted" style="width: 20px; height: 20px;"></i>
+                        Acción por defecto
+                    </label>
+                    <div class="d-flex gap-4">
+                        <div class="form-check custom-radio">
+                            <input class="form-check-input" type="radio" name="action" id="actionResize" value="resize"
+                                checked>
+                            <label class="form-check-label" for="actionResize">
+                                Upscale a 4K
+                            </label>
+                        </div>
+                        <div class="form-check custom-radio">
+                            <input class="form-check-input" type="radio" name="action" id="actionReverse"
+                                value="reverse">
+                            <label class="form-check-label" for="actionReverse">
+                                Reverse Video
+                            </label>
+                        </div>
+                        <div class="form-check custom-radio">
+                            <input class="form-check-input" type="radio" name="action" id="actionRemoveBg"
+                                value="remove_bg">
+                            <label class="form-check-label" for="actionRemoveBg">
+                                🤖 Transparencia AI (.mov)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="d-grid shadow-lg">
+                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+                            <i data-lucide="play" class="me-2" style="width: 20px; height: 20px;"></i>
+                            Empezar Procesamiento
+                        </button>
+                    </div>
+            </form>
+        </div>
+
+        <!-- Processing Queue -->
+        <div id="queueArea" class="glass-card p-5 text-start">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="m-0">
+                    <i data-lucide="list" class="me-2 text-muted" style="width: 24px; height: 24px;"></i>
+                    Cola de Tareas
+                </h3>
+                <button id="downloadAllBtn" class="btn btn-outline-success d-none">
+                    <i data-lucide="download" class="me-2" style="width: 18px; height: 18px;"></i>
+                    Descargar todo (<span id="pendingCount">0</span>)
+                </button>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Vídeo</th>
+                            <th>Modo</th>
+                            <th>Estado</th>
+                            <th class="text-end">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskTableBody">
+                        <!-- Tasks dynamically loaded -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Error Area -->
+        <div id="error" class="alert mt-4 d-none p-4">
+            <div class="d-flex">
+                <i data-lucide="alert-circle" class="me-3" style="width: 24px; height: 24px;"></i>
+                <div>
+                    <h5 class="alert-heading h-header">¡Oops! Algo salió mal</h5>
+                    <p id="errorMessage" class="mb-0 small"></p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-5 text-muted small">
+            <p>&copy; 2026 VideoResizer Pro. Potenciado por Flask & FFmpeg.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Estado local
+        const downloadedTasks = new Set();
+        let currentTasks = [];
+
+        // UI Helpers
+        const fileInput = document.getElementById('videoFile');
+        const fileInfo = document.getElementById('fileInfo');
+
+        fileInput.addEventListener('change', () => {
+            const count = fileInput.files.length;
+            fileInfo.textContent = count > 0 ? `${count} archivo(s) seleccionados ready to go.` : '';
+        });
+
+        async function updateTasks() {
+            try {
+                const response = await fetch('/tasks');
+                const tasks = await response.json();
+                currentTasks = tasks;
+                const tableBody = document.getElementById('taskTableBody');
+                const downloadAllBtn = document.getElementById('downloadAllBtn');
+                const pendingCountSpan = document.getElementById('pendingCount');
+
+                if (tasks.length === 0 && tableBody.innerHTML === '') return;
+
+                tableBody.innerHTML = '';
+                let pendingDownloads = 0;
+
+                tasks.forEach(task => {
+                    let statusBadge = '';
+                    let isCompleted = task.status === 'Completado';
+
+                    if (task.status === 'Pendiente') {
+                        statusBadge = '<span class="badge bg-secondary">Pendiente</span>';
+                    } else if (task.status === 'Procesando') {
+                        statusBadge = '<div class="d-flex align-items-center"><div class="spinner-border spinner-border-sm text-primary me-2"></div> <span class="badge bg-primary">Procesando</span></div>';
+                    } else if (isCompleted) {
+                        statusBadge = '<span class="badge bg-success">Completado</span>';
+                        if (!downloadedTasks.has(task.id)) pendingDownloads++;
+                    } else if (task.status === 'Error') {
+                        statusBadge = `<span class="badge bg-danger">Error: ${task.error}</span>`;
+                    }
+
+                    const row = `
+                    <tr>
+                        <td class="fw-medium">${task.filename}</td>
+                        <td><span class="text-muted small text-uppercase">${task.action === 'resize' ? '4K Upscale' : task.action === 'remove_bg' ? 'Remove BG AI' : 'Reverse'}</span></td>
+                        <td>${statusBadge}</td>
+                        <td class="text-end">
+                            ${isCompleted ?
+                            `<a href="/download/${task.output_filename}" 
+                                    class="btn btn-sm ${downloadedTasks.has(task.id) ? 'btn-outline-secondary' : 'btn-success'}" 
+                                    onclick="downloadedTasks.add('${task.id}'); updateTasks();">
+                                    <i data-lucide="${downloadedTasks.has(task.id) ? 'check' : 'download'}" class="me-1" style="width: 14px; height: 14px;"></i>
+                                    ${downloadedTasks.has(task.id) ? 'Listo' : 'Download'}
+                                </a>` :
+                            '<span class="text-muted opacity-50"><i data-lucide="clock" style="width: 14px; height: 14px;"></i></span>'}
+                        </td>
+                    </tr>
+                `;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+
+                lucide.createIcons();
+
+                if (pendingDownloads > 0) {
+                    downloadAllBtn.classList.remove('d-none');
+                    pendingCountSpan.textContent = pendingDownloads;
+                } else {
+                    downloadAllBtn.classList.add('d-none');
+                }
+
+            } catch (error) {
+                console.error('Error actualizando tareas:', error);
+            }
+        }
+
+        async function downloadAll() {
+            const toDownload = currentTasks.filter(t => t.status === 'Completado' && !downloadedTasks.has(t.id));
+
+            for (const task of toDownload) {
+                const link = document.createElement('a');
+                link.href = `/download/${task.output_filename}`;
+                link.download = task.output_filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                downloadedTasks.add(task.id);
+                await new Promise(resolve => setTimeout(resolve, 800));
+            }
+            updateTasks();
+        }
+
+        document.getElementById('downloadAllBtn').addEventListener('click', downloadAll);
+
+        setInterval(updateTasks, 3000);
+        updateTasks();
+
+        document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const action = document.querySelector('input[name="action"]:checked').value;
+            const submitBtn = document.getElementById('submitBtn');
+            const errorDiv = document.getElementById('error');
+
+            const files = fileInput.files;
+            if (files.length === 0) return;
+
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files[]', files[i]);
+            }
+            formData.append('action', action);
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="spinner-border spinner-border-sm me-2"></div> Subiendo archivos...';
+            errorDiv.classList.add('d-none');
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    fileInput.value = '';
+                    fileInfo.textContent = '';
+                    updateTasks();
+                } else {
+                    throw new Error(data.error || 'Error desconocido');
+                }
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = error.message;
+                errorDiv.classList.remove('d-none');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i data-lucide="play" class="me-2" style="width: 20px; height: 20px;"></i> Empezar Procesamiento';
+                lucide.createIcons();
+            }
+        });
+    </script>
+
+</body>
+
+</html>
