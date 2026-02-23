@@ -160,9 +160,13 @@ def remove_video_background(input_path, output_path):
         if not ret:
             break
             
-        # Remover el fondo usando el modelo onnx default (U2Net) en el frame
-        # Devuelve un array RGBA directamente (transparencia real pixel por pixel)
-        result_bg_removed = remove(frame) 
+        # OpenCV lee fotogramas en formato BGR. FFmpeg y la IA esperan colores en RGB puro.
+        # Debemos invertir el espacio de color primero para que no surja el "Efecto Pitufo" (tonos azules excesivos)
+        frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            
+        # Remover el fondo usando el modelo onnx default (U2Net) en el frame RGB
+        # Devuelve un array RGBA directamente (transparencia real pixel por pixel y colores cálidos precisos)
+        result_bg_removed = remove(frame_rgb) 
         
         # Escribir el fotograma RGBA puro formateado en bytes a stdin_pipe de ffmpeg
         process.stdin.write(result_bg_removed.tobytes())
